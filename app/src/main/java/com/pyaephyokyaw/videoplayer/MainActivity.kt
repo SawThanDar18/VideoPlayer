@@ -24,7 +24,6 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.*
 import com.pyaephyokyaw.videoplayer.databinding.ActivityMainBinding
-import java.net.URLEncoder
 
 
 class MainActivity : AppCompatActivity() {
@@ -111,14 +110,14 @@ class MainActivity : AppCompatActivity() {
             resultLauncher.launch(intent)
         }
 
-        val fullInfo = (binding.urlEdt.text != null)
+        val fullInfo = (binding.urlEdt.text.toString() != "")
         binding.goBtn.setOnClickListener {
             URL = if (fullInfo) {
                 binding.urlEdt.text.toString()
             } else {
+                Toast.makeText(this, "Please type URL", Toast.LENGTH_LONG).show()
                 "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
             }
-            Toast.makeText(this, URL, Toast.LENGTH_LONG).show()
             preparePlayer(URL)
         }
     }
@@ -146,7 +145,6 @@ class MainActivity : AppCompatActivity() {
         binding.player.player = exoPlayer
 
         val defaultHttpDataSourceFactory = DefaultHttpDataSource.Factory()
-        //val yourURLStr = "https://host.com?param=" + URLEncoder.encode(url, "UTF-8")
         val mediaItem = MediaItem.fromUri(url)
         val mediaSource = ProgressiveMediaSource.Factory(defaultHttpDataSourceFactory)
             .createMediaSource(mediaItem)
